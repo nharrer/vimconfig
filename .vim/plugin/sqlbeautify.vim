@@ -93,7 +93,7 @@ endfunction
 
 " Damit die bloeden "Pattern not found" Exceptions weg sind.
 " Das geht sicher irgenwie besser, aber keine Ahnung wie
-function ExecNoError(expr)
+function! ExecNoError(expr)
   try
     exe a:expr
   catch 
