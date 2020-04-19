@@ -1,14 +1,5 @@
+" original _vimrc on windows 
 if has('win32')
-  " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-  " across (heterogeneous) systems easier.
-  set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-
-  set directory=C:\Temp\bak_files
-  set backupdir=C:\Temp\bak_files
-  set undodir=C:\Temp\bak_files
-
-  " Von hier weg bis zum Endif steht der Inhalt vom originalen Windows _vimrc:
-
   " Vim with all enhancements
   source $VIMRUNTIME/vimrc_example.vim
 
@@ -57,14 +48,15 @@ if has('win32')
   endfunction
 endif
 
-" Added by Norbert
+" On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+" across (heterogeneous) systems easier.
+if has('win32')
+  set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" /etc/vim/vimrc.local V1.1.12 2019-07-30 https://gist.github.com/mikehaertl/1612035
+" Vundle (based on https://gist.github.com/mikehaertl/1612035)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-" A Vundle based Vim configuration with globally shared plugins on Ubuntu.
-"
 " This is a Vundle based Vim setup that keeps all plugins in a global
 " directory, namely /etc/vim/bundle. It's trimmed towards PHP development
 " with Yii.
@@ -108,13 +100,11 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 " End of Vundle plugins
-call vundle#end()           " required
+call vundle#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" settings by norbert:
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General
+" settings by norbert
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set showcmd            " Show (partial) command in status line.
@@ -128,30 +118,67 @@ set laststatus=2       " Always show status line
 set lazyredraw         " do not redraw while running macros (much faster)
 set whichwrap+=<,>,h,l " make cursor keys and h,l wrap over line endings
 set rulerformat=%l,%c%V%=%n\ %p%%:
+set undofile           " create undofiles
+set backup             " create backupfiles
 
 syntax on
 
+" use gruvbox as colorscheme
 let g:gruvbox_italic = '0'
 :colorscheme gruvbox
 :set background=dark
 
-if has("autocmd")
-  filetype plugin indent on
-endif
+" define indentations
+filetype plugin indent on
 
 set tabstop=4
 set shiftwidth=4
 set expandtab
 
-imap <S-Tab> <Esc><<i
-:vnoremap <Tab> >gv
-:vnoremap <S-Tab> <gv
+if has("autocmd")
+  autocmd FileType vim setlocal shiftwidth=2 tabstop=2
+endif
 
-if !has('win32')
-  " don't use mouse mode
+" tab / shift-tab moves selected block
+inoremap <S-Tab> <Esc><<i
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+" ctrl-t follows tags (instead of ctrl-], btw: ctrl-o goes back)
+nnoremap <C-t> <C-]>
+
+" os specific stuff
+if has('win32')
+  " bright background on windows
+  set background=
+else 
+  " don't use mouse mode in linux console
   set mouse=
   set ttymouse=
-else 
-  :set background=
 endif
+
+" handle swap/backup/undo files
+" based on https://vim.fandom.com/wiki/Automatically_create_tmp_or_backup_directories
+if has('win32')
+  let s:tempdir='C:\Temp\'
+else 
+  " linux
+  let s:tempdir='/tmp/'
+endif
+let s:tempdir.='vim/'
+let s:swapdir=s:tempdir
+let s:backupdir=s:tempdir.'bak/'
+let s:undodir=s:tempdir.'und/'
+if !isdirectory(s:swapdir)
+  call mkdir(s:swapdir, "p")
+endif
+if !isdirectory(s:backupdir)
+  call mkdir(s:backupdir, "p")
+endif
+if !isdirectory(s:undodir)
+  call mkdir(s:undodir, "p")
+endif
+execute 'set directory='.s:swapdir.'/'
+execute 'set backupdir='.s:backupdir.'/'
+execute 'set undodir='.s:undodir.'/'
 
