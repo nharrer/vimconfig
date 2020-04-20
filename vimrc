@@ -112,11 +112,13 @@ set showmatch          " Show matching brackets.
 set ignorecase         " Do case insensitive matching
 set smartcase          " Do smart case matching
 set incsearch          " Incremental search
+set hlsearch           " highlight while searching
 set autowrite          " Automatically save before commands like :next and :make
 set hidden             " Hide buffers when they are abandoned
 set laststatus=2       " Always show status line
 set lazyredraw         " do not redraw while running macros (much faster)
 set whichwrap+=<,>,h,l " make cursor keys and h,l wrap over line endings
+set encoding=utf-8     " UTF-8 per default
 set rulerformat=%l,%c%V%=%n\ %p%%:
 set undofile           " create undofiles
 set backup             " create backupfiles
