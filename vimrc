@@ -146,6 +146,11 @@ inoremap <S-Tab> <Esc><<i
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 
+" ctrl-b: shows buffers, shift-b,shift-n: prev, next buffer
+:nnoremap <C-b> :buffers<CR>:buffer<Space>
+:nnoremap <S-b> :N<CR>
+:nnoremap <S-n> :n<CR>
+
 " ctrl-t follows tags (instead of ctrl-], btw: ctrl-o goes back)
 nnoremap <C-t> <C-]>
 
