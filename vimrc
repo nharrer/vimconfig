@@ -178,12 +178,15 @@ let s:backupdir=s:tempdir.'bak/'
 let s:undodir=s:tempdir.'und/'
 if !isdirectory(s:swapdir)
   call mkdir(s:swapdir, "p")
+  call setfperm(s:swapdir, "rwxrwxrwx")
 endif
 if !isdirectory(s:backupdir)
   call mkdir(s:backupdir, "p")
+  call setfperm(s:backupdir, "rwxrwxrwx")
 endif
 if !isdirectory(s:undodir)
   call mkdir(s:undodir, "p")
+  call setfperm(s:undodir, "rwxrwxrwx")
 endif
 execute 'set directory='.s:swapdir.'/'
 execute 'set backupdir='.s:backupdir.'/'
