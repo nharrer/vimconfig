@@ -131,7 +131,9 @@ let g:gruvbox_italic = '0'
 :set background=dark
 
 " define indentations
-filetype plugin indent on
+if has("autocmd")
+  filetype plugin indent on
+endif
 
 set tabstop=4
 set shiftwidth=4
@@ -158,6 +160,7 @@ nnoremap <C-t> <C-]>
 if has('win32')
   " bright background on windows
   set background=
+  set guifont=Consolas
 else 
   " don't use mouse mode in linux console
   set mouse=
