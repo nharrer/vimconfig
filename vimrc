@@ -95,7 +95,7 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'morhetz/gruvbox'
+Plugin 'sainnhe/gruvbox-material'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -126,8 +126,12 @@ set backup             " create backupfiles
 syntax on
 
 " use gruvbox as colorscheme
-let g:gruvbox_italic = '0'
-:colorscheme gruvbox
+"let g:gruvbox_material_disable_italic_comment = '1'
+if has('termguicolors')
+  set termguicolors
+endif
+let g:gruvbox_material_background = 'soft'
+:colorscheme gruvbox-material
 :set background=dark
 
 " define indentations
@@ -139,6 +143,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" but vim config files should have a tabstop of 2
 if has("autocmd")
   autocmd FileType vim setlocal shiftwidth=2 tabstop=2
 endif
@@ -153,8 +158,17 @@ vnoremap <S-Tab> <gv
 :nnoremap <S-b> :N<CR>
 :nnoremap <S-n> :n<CR>
 
-" ctrl-t follows tags (instead of ctrl-], btw: ctrl-o goes back)
-nnoremap <C-t> <C-]>
+" ctrl-f follows tags (instead of ctrl-], btw: ctrl-o goes back)
+nnoremap <C-f> <C-]>
+
+" remember last cursor position
+augroup remember_cursor
+  autocmd!
+  autocmd BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \ exe "normal! g`\"" |
+        \ endif
+augroup END
 
 " os specific stuff
 if has('win32')
@@ -164,7 +178,9 @@ if has('win32')
 else 
   " don't use mouse mode in linux console
   set mouse=
-  set ttymouse=
+  if !has('nvim')
+    set ttymouse=
+  endif
 endif
 
 " handle swap/backup/undo files
