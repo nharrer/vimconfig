@@ -54,6 +54,10 @@ if has('win32')
   set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
 endif
 
+if has('unix') && has("gui_running")
+  set guifont=Adwaita\ Mono\ 10
+endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle (based on https://gist.github.com/mikehaertl/1612035)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -122,6 +126,10 @@ set encoding=utf-8     " UTF-8 per default
 set rulerformat=%l,%c%V%=%n\ %p%%:
 set undofile           " create undofiles
 set backup             " create backupfiles
+
+" <leader> key, for example for <leader>f to format sql (see plugin
+" sqlbeautify.vim)
+let mapleader=" "
 
 syntax on
 
