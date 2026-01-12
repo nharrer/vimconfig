@@ -16,7 +16,7 @@ function! DoPrettyXML()
   " set env variable to control indentation
   let l:sw = &shiftwidth
   let $XMLLINT_INDENT = repeat(' ', l:sw)
-  silent %!xmllint --format -
+  silent %!xmllint --format --recover -
   " xmllint will insert an <?xml?> header. it's easy enough to delete
   " if you don't want it.
   " delete the fake tags
