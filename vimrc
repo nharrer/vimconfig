@@ -123,12 +123,8 @@ if has("gui_running")
   if has('win32')
     set guifont=Consolas
   endif
-else
-  " don't use mouse mode in console
-  set mouse=
-  if !has('nvim')
-    set ttymouse=
-  endif
+
+  " Note: disabling of mouse in console has been move to plugin fixmouse.vim
 endif
 
 " use gruvbox as colorscheme
@@ -136,7 +132,7 @@ if has('termguicolors')
   set termguicolors
 endif
 let g:gruvbox_material_background = 'soft'
-"let g:gruvbox_material_disable_italic_comment = '1'
+let g:gruvbox_material_disable_italic_comment = '1'
 colorscheme gruvbox-material
 set background=dark
 if has('win32')
@@ -156,11 +152,11 @@ set laststatus=2       " Always show status line
 set lazyredraw         " do not redraw while running macros (much faster)
 set whichwrap+=<,>,h,l " make cursor keys and h,l wrap over line endings
 set encoding=utf-8     " UTF-8 per default
-set rulerformat=%l,%c%V%=%n\ %p%%:
 set undofile           " create undofiles
 set backup             " create backupfiles
 set selectmode=        " I prefer visual mode over select mode
 set clipboard^=unnamedplus " copy yanked buffer to clipboard
+set rulerformat=%l,%c%V%=%n\ %p%%:
 
 " <leader> key, for example for <leader>f to format sql (see plugin
 " sqlbeautify.vim)
