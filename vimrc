@@ -126,9 +126,11 @@ set backup             " create backupfiles
 syntax on
 
 " use gruvbox as colorscheme
-"let g:gruvbox_material_disable_italic_comment = '1'
 if has('termguicolors')
   set termguicolors
+endif
+if !empty($VIM_NO_ITALIC) " set VIM_NO_ITALIC in /etc/environment or such
+  let g:gruvbox_material_disable_italic_comment = '1'
 endif
 let g:gruvbox_material_background = 'soft'
 :colorscheme gruvbox-material
