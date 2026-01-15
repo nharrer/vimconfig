@@ -131,10 +131,12 @@ endif
 if has('termguicolors')
   set termguicolors
 endif
+if !empty($VIM_NO_ITALIC) " set VIM_NO_ITALIC in /etc/environment or such
+  let g:gruvbox_material_disable_italic_comment = '1'
+endif
 let g:gruvbox_material_background = 'soft'
-let g:gruvbox_material_disable_italic_comment = '1'
-colorscheme gruvbox-material
-set background=dark
+:colorscheme gruvbox-material
+:set background=dark
 if has('win32')
   " bright background on windows
   set background=
@@ -161,17 +163,6 @@ set rulerformat=%l,%c%V%=%n\ %p%%:
 " <leader> key, for example for <leader>f to format sql (see plugin
 " sqlbeautify.vim)
 let mapleader=" "
-
-" use gruvbox as colorscheme
-if has('termguicolors')
-  set termguicolors
-endif
-if !empty($VIM_NO_ITALIC) " set VIM_NO_ITALIC in /etc/environment or such
-  let g:gruvbox_material_disable_italic_comment = '1'
-endif
-let g:gruvbox_material_background = 'soft'
-:colorscheme gruvbox-material
-:set background=dark
 
 " define indentations
 if has("autocmd")
