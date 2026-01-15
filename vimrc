@@ -39,6 +39,13 @@ if has('win32')
   endfunction
 endif
 
+" On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+" across (heterogeneous) systems easier.
+if has('win32')
+  set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+endif
+ 
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle (based on https://gist.github.com/mikehaertl/1612035)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -54,7 +61,7 @@ endif
 "
 "   mkdir /etc/vim/bundle
 "   git clone http://github.com/VundleVim/Vundle.vim.git /etc/vim/bundle/Vundle.vim
-"   echo | echo | vim +PluginInstall +qall &>/dev/null
+"   vim +PluginInstall +qall
 "
 " Brief help
 "  :PluginList          - list configured bundles
@@ -92,12 +99,6 @@ call vundle#end()
 " settings by norbert
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-" across (heterogeneous) systems easier.
-if has('win32')
-  set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-endif
-  
 if !has('nvim')
   " the important parts from $VIMRUNTIME/vimrc_example.vim
   source $VIMRUNTIME/defaults.vim
@@ -121,7 +122,7 @@ if has("gui_running")
   endif
 
   if has('win32')
-    set guifont=Consolas
+    set guifont=Consolas:h10
   endif
 
   " Note: disabling of mouse in console has been move to plugin fixmouse.vim
@@ -138,8 +139,7 @@ let g:gruvbox_material_background = 'soft'
 :colorscheme gruvbox-material
 :set background=dark
 if has('win32')
-  " bright background on windows
-  set background=
+  set background=      " bright background on windows
 endif
 
 set showcmd            " Show (partial) command in status line.
