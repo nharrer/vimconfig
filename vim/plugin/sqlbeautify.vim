@@ -1,8 +1,8 @@
 " Beautify SQL the Softline-Way
 
-nmap <C-S-f> :call SQLBeautify()
+nmap <leader>f :call SQLBeautify()
 
-nmap <C-S-d> ::%s_^\(.*\)$_"\1" +_g
+nmap <leader>d ::%s_^\(.*\)$_"\1" +_g
 
 function SQLBeautify()
   " damit das Syntax-Highlighting funktioniert

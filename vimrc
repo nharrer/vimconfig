@@ -1,14 +1,5 @@
 " original _vimrc on windows 
 if has('win32')
-  " Vim with all enhancements
-  source $VIMRUNTIME/vimrc_example.vim
-
-  " Remap a few keys for Windows behavior
-  source $VIMRUNTIME/mswin.vim
-
-  " Mouse behavior (the Windows way)
-  behave mswin
-
   " Use the internal diff if available.
   " Otherwise use the special 'diffexpr' for Windows.
   if &diffopt !~# 'internal'
@@ -48,12 +39,6 @@ if has('win32')
   endfunction
 endif
 
-" On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-" across (heterogeneous) systems easier.
-if has('win32')
-  set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-endif
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle (based on https://gist.github.com/mikehaertl/1612035)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -86,7 +71,7 @@ if has('win32')
   call vundle#begin('$HOME/.vim/bundle/')
 else
   set rtp+=/etc/vim/bundle/Vundle.vim
-  call vundle#begin('/etc/vim/bundle')    " Use a shared folder instead of ~/.vimrc/bundle
+  call vundle#begin('/etc/vim/bundle')  " Use a shared folder instead of ~/.vimrc/bundle
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -107,6 +92,54 @@ call vundle#end()
 " settings by norbert
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+" across (heterogeneous) systems easier.
+if has('win32')
+  set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+endif
+  
+if !has('nvim')
+  " the important parts from $VIMRUNTIME/vimrc_example.vim
+  source $VIMRUNTIME/defaults.vim
+  packadd! matchit
+endif
+
+if has("gui_running")
+  " Remap a few keys for Windows behavior (this is also usefull on linux)
+  source $VIMRUNTIME/mswin.vim
+
+  " Mouse behavior (the Windows way)
+  behave mswin
+
+  if has('unix')
+    set guifont=Adwaita\ Mono\ 10
+    set guioptions-=T
+
+    if argc() == 0
+      set lines=60 columns=120
+    endif
+  endif
+
+  if has('win32')
+    set guifont=Consolas
+  endif
+
+  " Note: disabling of mouse in console has been move to plugin fixmouse.vim
+endif
+
+" use gruvbox as colorscheme
+if has('termguicolors')
+  set termguicolors
+endif
+let g:gruvbox_material_background = 'soft'
+let g:gruvbox_material_disable_italic_comment = '1'
+colorscheme gruvbox-material
+set background=dark
+if has('win32')
+  " bright background on windows
+  set background=
+endif
+
 set showcmd            " Show (partial) command in status line.
 set showmatch          " Show matching brackets.
 set ignorecase         " Do case insensitive matching
@@ -119,11 +152,15 @@ set laststatus=2       " Always show status line
 set lazyredraw         " do not redraw while running macros (much faster)
 set whichwrap+=<,>,h,l " make cursor keys and h,l wrap over line endings
 set encoding=utf-8     " UTF-8 per default
-set rulerformat=%l,%c%V%=%n\ %p%%:
 set undofile           " create undofiles
 set backup             " create backupfiles
+set selectmode=        " I prefer visual mode over select mode
+set clipboard^=unnamedplus " copy yanked buffer to clipboard
+set rulerformat=%l,%c%V%=%n\ %p%%:
 
-syntax on
+" <leader> key, for example for <leader>f to format sql (see plugin
+" sqlbeautify.vim)
+let mapleader=" "
 
 " use gruvbox as colorscheme
 if has('termguicolors')
@@ -144,7 +181,6 @@ endif
 set tabstop=4
 set shiftwidth=4
 set expandtab
-
 " but vim config files should have a tabstop of 2
 if has("autocmd")
   autocmd FileType vim setlocal shiftwidth=2 tabstop=2
@@ -157,8 +193,8 @@ vnoremap <S-Tab> <gv
 
 " ctrl-b: shows buffers, shift-b,shift-n: prev, next buffer
 :nnoremap <C-b> :buffers<CR>:buffer<Space>
-:nnoremap <S-b> :N<CR>
-:nnoremap <S-n> :n<CR>
+:nnoremap <S-b> :bp<CR>
+:nnoremap <S-n> :bn<CR>
 
 " ctrl-f follows tags (instead of ctrl-], btw: ctrl-o goes back)
 nnoremap <C-f> <C-]>
@@ -172,19 +208,6 @@ augroup remember_cursor
         \ endif
 augroup END
 
-" os specific stuff
-if has('win32')
-  " bright background on windows
-  set background=
-  set guifont=Consolas
-else 
-  " don't use mouse mode in linux console
-  set mouse=
-  if !has('nvim')
-    set ttymouse=
-  endif
-endif
-
 " handle swap/backup/undo files
 " based on https://vim.fandom.com/wiki/Automatically_create_tmp_or_backup_directories
 if has('win32')
@@ -197,6 +220,10 @@ let s:tempdir.='vim/'
 let s:swapdir=s:tempdir
 let s:backupdir=s:tempdir.'bak/'
 let s:undodir=s:tempdir.'und/'
+if has('nvim')
+  " since neovim has a different format, use a different dir
+  let s:undodir=s:tempdir.'und_neo/'
+endif
 if !isdirectory(s:swapdir)
   call mkdir(s:swapdir, "p")
   call setfperm(s:swapdir, "rwxrwxrwx")
