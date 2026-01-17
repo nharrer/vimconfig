@@ -133,7 +133,6 @@ if has('termguicolors')
   set termguicolors
 endif
 if empty($VIM_ITALIC) " set VIM_NO_ITALIC in /etc/environment or such
-  echom "noooo"
   let g:gruvbox_material_disable_italic_comment = '1'
 endif
 let g:gruvbox_material_background = 'soft'
